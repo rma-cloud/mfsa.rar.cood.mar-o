@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordenação - LQT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        h1, h2, h3, h4, .font-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+        .tab-active {
+            border-bottom: 3px solid #fbbf24;
+            color: #fbbf24;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stat-card {
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Cabeçalho -->
+    <header class="bg-[#003366] text-white sticky top-0 z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <i class="fa-solid fa-chart-line text-yellow-400 text-2xl"></i>
+                    <span class="font-poppins font-bold text-lg tracking-tight uppercase">Coordenação - LQT</span>
+                </div>
+                <nav class="flex space-x-2 h-full items-center text-xs font-semibold uppercase tracking-wider overflow-x-auto no-scrollbar">
+                    <button onclick="showSection('buser')" class="nav-btn tab-active px-4 py-7 transition-all whitespace-nowrap" id="btn-buser">BUSER</button>
+                    <button onclick="showSection('principia')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-principia">PRINCIPIA</button>
+                    <button onclick="showSection('omio')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-omio">OMIO</button>
+                    <button onclick="showSection('juntos')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-juntos">JUNTOS</button>
+                    <button onclick="showSection('totvs')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-totvs">TOTVS</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        
+        <!-- SECÇÃO: BUSER -->
+        <section id="buser" class="content-section active">
+            <div class="bg-[#004080] text-white py-12 md:py-16">
+                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+                    <h2 class="text-4xl font-bold mb-2">CLIENTE: BUSER</h2>
+                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+                <!-- Rentabilidade -->
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Fevereiro -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 12.380,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 10.523,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 1.546,94 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">14,70%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Março -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 13.080,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 11.118,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 10.703,77 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">3,73%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Abril -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">[XX]%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
+                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
+                        <p class="text-gray-700 text-sm">Houve variação na margem de lucro em razão do encerramento de mais pastas.</p>
+                    </div>
+                </div>
+
+                <!-- Detalhamento Secundário -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
+                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
+                                <li>
+                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
+                                    <ul class="ml-4 mt-1 space-y-1">
+                                        <li><span class="font-semibold">Quantidade:</span> </li>
+                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
+                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
+                                    </ul>
+                                </li>
+                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
+                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
+                        
+                        <div class="mb-6">
+                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Realização de despachos com os Magistrados que possuem entendimento de responsabilização solidária da BUSER com as transportadoras – trazendo os julgados recentes do nosso cliente OMIO (pois possui a mesma natureza e modelo de negócio, e nele, temos mais reconhecimentos de ilegitimidade passiva) que reconheceram a ilegitimidade passiva da empresa.</li>
+                                <li><span class="font-semibold text-gray-800 block">Status:</span> Iniciado.</li>
+                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Aumento na quantidade de decisões favoráveis.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
+                            <p class="text-sm text-gray-600 leading-relaxed">Aumento da base nos próximos meses em razão de pretensão de Amanda (cliente), e consequentemente, o faturamento.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO: PRINCIPIA -->
+        <section id="principia" class="content-section">
+            <div class="bg-[#004080] text-white py-12 md:py-16">
+                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+                    <h2 class="text-4xl font-bold mb-2">CLIENTE: PRINCIPIA</h2>
+                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA (Marina) | DADOS RAR - MARÇO
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+                <!-- Rentabilidade -->
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Fevereiro -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 600,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 510,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-red-600">-R$ 522,43 [NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">-102,44%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Março -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 525,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 446,25</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-red-600">-R$ 604,85 [NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">-135,54%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Abril -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">[XX]%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
+                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
+                        <p class="text-gray-700 text-sm">Tivemos variação na margem de lucro no período acima em razão da descontratação de 1 pasta (cuja matéria é conduzida por outro escritório credenciado).</p>
+                    </div>
+                </div>
+
+                <!-- Detalhamento Secundário -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
+                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
+                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
+                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
+                        
+                        <div class="mb-6">
+                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Visita presencial de SMG (sugestão dada por Socorro em reunião de feedback com MFSA) buscando entender o motivo de não estarmos recebendo novas ações.</li>
+                                <li><span class="font-semibold text-gray-800 block">Status:</span> Não iniciado.</li>
+                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Aumento de receita.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
+                            <p class="text-sm text-gray-600 leading-relaxed">A expectativa de resultado é a mesma de março (Receita Bruta R$ 525,00), visto que não estamos recebendo novas ações desde a contratação.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO: OMIO -->
+        <section id="omio" class="content-section">
+            <div class="bg-[#004080] text-white py-12 md:py-16">
+                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+                    <h2 class="text-4xl font-bold mb-2">CLIENTE: OMIO</h2>
+                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+                <!-- Rentabilidade -->
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Fevereiro -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 3.600,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 3.060,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-red-600">-R$ 2.059,78 [NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">-67,31%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Março -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 9.120,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 7.752,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 3.458,73 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">44,62%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Abril -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">[XX]%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
+                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
+                        <p class="text-gray-700 text-sm">Tivemos variação na margem de lucro em razão da entrada de novas ações, julgamentos e encerramentos (o contrato prevê pagamentos em cada uma destas fases).</p>
+                    </div>
+                </div>
+
+                <!-- Detalhamento Secundário -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
+                            <p class="text-sm text-gray-600">Não há.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
+                                <li>
+                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
+                                    <ul class="ml-4 mt-1 space-y-1">
+                                        <li><span class="font-semibold">Quantidade:</span> </li>
+                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
+                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
+                                    </ul>
+                                </li>
+                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
+                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
+                        
+                        <div class="mb-6">
+                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Realização de despachos com os Magistrados que possuem entendimento de responsabilização solidária da OMIO com as transportadoras – trazendo os julgados recentes que reconheceram a ilegitimidade passiva da empresa.</li>
+                                <li><span class="font-semibold text-gray-800 block">Status:</span> Iniciado.</li>
+                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Aumento na quantidade de decisões favoráveis.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
+                            <p class="text-sm text-gray-600 leading-relaxed">Aumento da base em cerca de 5 processos (trata-se de projeção mensal, de acordo com o histórico de entradas) e consequentemente, do faturamento.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO: JUNTOS -->
+        <section id="juntos" class="content-section">
+            <div class="bg-[#004080] text-white py-12 md:py-16">
+                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+                    <h2 class="text-4xl font-bold mb-2">CLIENTE: JUNTOS</h2>
+                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+                <!-- Rentabilidade -->
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Fevereiro -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 7.800,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 6.630,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$</span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 793,97 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">11,98%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Março -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 7.004,80</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 5.954,08</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 481,16 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">8,08%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Abril -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">[XX]%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
+                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
+                        <p class="text-gray-700 text-sm">Houve variação na margem de lucro em razão do encerramento de menos pastas (tivemos menos casos passíveis de encerramento), porém, em compensação, em março tivemos 2 demandas consultivas que acarretaram no “equilíbrio” com o faturamento anterior (representou R$ 1.200,00).</p>
+                    </div>
+                </div>
+
+                <!-- Detalhamento Secundário -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
+                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
+                                <li>
+                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
+                                    <ul class="ml-4 mt-1 space-y-1">
+                                        <li><span class="font-semibold">Quantidade:</span> </li>
+                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
+                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
+                                    </ul>
+                                </li>
+                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
+                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
+                        
+                        <div class="mb-6">
+                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Melhoria na análise e retorno dos subsídios.</li>
+                                <li><span class="font-semibold text-gray-800 block">Status:</span> Em andamento (conversamos com o cliente em reunião e as sugestões de melhorias já estão sendo implementadas).</li>
+                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> melhor argumentação/conjunto probatório em nossas defesas.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
+                            <p class="text-sm text-gray-600 leading-relaxed">A projeção do mês seguinte possui média similar aos resultados anteriores, na média de 7 a 8k, sem prejuízos processuais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO: TOTVS -->
+        <section id="totvs" class="content-section">
+            <div class="bg-[#004080] text-white py-12 md:py-16">
+                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+                    <h2 class="text-4xl font-bold mb-2">CLIENTE: TOTVS</h2>
+                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
+                <!-- Rentabilidade -->
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Fevereiro -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 8.670,00</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 7.369,50</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 386,80 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">5,25%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Março -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 16.557,72</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 14.074,06</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-green-600">R$ 2.655,06 [POSITIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">18,86%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Abril -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
+                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
+                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
+                                    <span class="text-gray-500">Resultado Final:</span>
+                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-gray-500">Margem de Lucro:</span>
+                                    <span class="font-bold text-gray-800">[XX]%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
+                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
+                        <p class="text-gray-700 text-sm">Houve variação na margem de lucro em razão do recebimento de honorários em favor do escritório em 1 processo, o que representou metade do faturamento do mês de março.</p>
+                    </div>
+                </div>
+
+                <!-- Detalhamento Secundário -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
+                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
+                                <li>
+                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
+                                    <ul class="ml-4 mt-1 space-y-1">
+                                        <li><span class="font-semibold">Quantidade:</span> </li>
+                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
+                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
+                                    </ul>
+                                </li>
+                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
+                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
+                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
+                        
+                        <div class="mb-6">
+                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Revisão de base para identificarmos – e nos anteciparmos em relação às iniciativas do cliente – processos passíveis de encerramento e/ou que possuam eventuais pendências de cumprimento de condenação, a fim de evitar futuros bloqueios (que são matéria sensível para o cliente). <br><br> Realização de impulsionamentos com as secretarias nos processos que estão parados a muito tempo (a base da TOTVS é praticamente toda migrada e antiga).</li>
+                                <li><span class="font-semibold text-gray-800 block">Status:</span> Em andamento.</li>
+                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Melhor satisfação do cliente em notar a nossa proatividade e compromisso em sanear os processos.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
+                            <p class="text-sm text-gray-600 leading-relaxed">Maior quantidade de encerramento de pastas e consequentemente, maior satisfação do cliente. Com o saneamento da base, pretendemos identificar também, oportunidades de recebimento de honorários em favor do escritório.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs">
+            <p>&copy; 2026 - Relatório de Coordenação LQT</p>
+            <p class="mt-2 md:mt-0 font-bold tracking-widest">CONFIDENCIAL</p>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Esconde todas as seções
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostra a seção desejada
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            // Atualiza os estilos das abas de navegação
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+            });
+            const activeBtn = document.getElementById('btn-' + sectionId);
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active');
+            }
+
+            // Rola suavemente para o topo ao trocar de aba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
