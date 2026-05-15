@@ -1,739 +1,1256 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordenação - MFSA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f8fafc;
-        }
-        h1, h2, h3, h4, .font-poppins {
-            font-family: 'Poppins', sans-serif;
-        }
-        .tab-active {
-            border-bottom: 3px solid #fbbf24;
-            color: #fbbf24;
-        }
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-            animation: fadeIn 0.4s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .stat-card {
-            transition: transform 0.2s;
-        }
-        .stat-card:hover {
-            transform: translateY(-2px);
-        }
-    </style>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Coordenação - MFSA Dashboard</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   <script>
+       tailwind.config = {
+           theme: {
+               extend: {
+                   fontFamily: {
+                       sans: ['Open Sans', 'sans-serif'],
+                       poppins: ['Poppins', 'sans-serif'],
+                   },
+                   colors: {
+                       brand: {
+                           dark: '#002244',
+                           primary: '#003366',
+                           secondary: '#004080',
+                           accent: '#fbbf24', // Amber 400
+                       }
+                   }
+               }
+           }
+       }
+   </script>
+   <style>
+       body {
+           background-color: #f1f5f9; /* Slate 100 */
+       }
+       .no-scrollbar::-webkit-scrollbar {
+           display: none;
+       }
+       .no-scrollbar {
+           -ms-overflow-style: none;
+           scrollbar-width: none;
+       }
+       .tab-active {
+           border-bottom: 3px solid #fbbf24;
+           color: #fbbf24;
+           background: linear-gradient(to top, rgba(251, 191, 36, 0.1) 0%, transparent 100%);
+       }
+       .content-section {
+           display: none;
+           opacity: 0;
+       }
+       .content-section.active {
+           display: block;
+           animation: fadeIn 0.5s ease-out forwards;
+       }
+       @keyframes fadeIn {
+           from { opacity: 0; transform: translateY(10px); }
+           to { opacity: 1; transform: translateY(0); }
+       }
+       .stat-card {
+           transition: all 0.3s ease;
+       }
+       .stat-card:hover {
+           transform: translateY(-4px);
+           box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+       }
+       .dashed-card {
+           background-image: repeating-linear-gradient(45deg, #f8fafc 25%, transparent 25%, transparent 75%, #f8fafc 75%, #f8fafc), repeating-linear-gradient(45deg, #f8fafc 25%, #ffffff 25%, #ffffff 75%, #f8fafc 75%, #f8fafc);
+           background-position: 0 0, 10px 10px;
+           background-size: 20px 20px;
+       }
+   </style>
 </head>
-<body class="min-h-screen flex flex-col">
-
-    <!-- Cabeçalho -->
-    <header class="bg-[#003366] text-white sticky top-0 z-50 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex-shrink-0 flex items-center gap-3">
-                    <i class="fa-solid fa-chart-line text-yellow-400 text-2xl"></i>
-                    <span class="font-poppins font-bold text-lg tracking-tight uppercase">Coordenação - MFSA</span>
-                </div>
-                <nav class="flex space-x-2 h-full items-center text-xs font-semibold uppercase tracking-wider overflow-x-auto no-scrollbar">
-                    <button onclick="showSection('buser')" class="nav-btn tab-active px-4 py-7 transition-all whitespace-nowrap" id="btn-buser">BUSER</button>
-                    <button onclick="showSection('principia')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-principia">PRINCIPIA</button>
-                    <button onclick="showSection('omio')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-omio">OMIO</button>
-                    <button onclick="showSection('juntos')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-juntos">JUNTOS</button>
-                    <button onclick="showSection('totvs')" class="nav-btn px-4 py-7 transition-all whitespace-nowrap" id="btn-totvs">TOTVS</button>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <main class="flex-grow">
-        
-        <!-- SECÇÃO: BUSER -->
-        <section id="buser" class="content-section active">
-            <div class="bg-[#004080] text-white py-12 md:py-16">
-                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-                    <h2 class="text-4xl font-bold mb-2">CLIENTE: BUSER</h2>
-                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
-                    </p>
-                </div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-                <!-- Rentabilidade -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
-                    </h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Fevereiro -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 12.380,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 10.523,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 1.546,94 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">14,70%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Março -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 13.080,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 11.118,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 10.703,77 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">3,73%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Abril -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">[XX]%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
-                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
-                        <p class="text-gray-700 text-sm">Houve variação na margem de lucro em razão do encerramento de mais pastas.</p>
-                    </div>
-                </div>
-
-                <!-- Detalhamento Secundário -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
-                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
-                                <li>
-                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
-                                    <ul class="ml-4 mt-1 space-y-1">
-                                        <li><span class="font-semibold">Quantidade:</span> </li>
-                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
-                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
-                                    </ul>
-                                </li>
-                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
-                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
-                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
-                        
-                        <div class="mb-6">
-                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Realização de despachos com os Magistrados que possuem entendimento de responsabilização solidária da BUSER com as transportadoras – trazendo os julgados recentes do nosso cliente OMIO (pois possui a mesma natureza e modelo de negócio, e nele, temos mais reconhecimentos de ilegitimidade passiva) que reconheceram a ilegitimidade passiva da empresa.</li>
-                                <li><span class="font-semibold text-gray-800 block">Status:</span> Iniciado.</li>
-                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Aumento na quantidade de decisões favoráveis.</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
-                            <p class="text-sm text-gray-600 leading-relaxed">Aumento da base nos próximos meses em razão de pretensão de Amanda (cliente), e consequentemente, o faturamento.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECÇÃO: PRINCIPIA -->
-        <section id="principia" class="content-section">
-            <div class="bg-[#004080] text-white py-12 md:py-16">
-                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-                    <h2 class="text-4xl font-bold mb-2">CLIENTE: PRINCIPIA</h2>
-                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA (Marina) | DADOS RAR - MARÇO
-                    </p>
-                </div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-                <!-- Rentabilidade -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
-                    </h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Fevereiro -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 600,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 510,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-red-600">-R$ 522,43 [NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">-102,44%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Março -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 525,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 446,25</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-red-600">-R$ 604,85 [NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">-135,54%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Abril -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">[XX]%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
-                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
-                        <p class="text-gray-700 text-sm">Tivemos variação na margem de lucro no período acima em razão da descontratação de 1 pasta (cuja matéria é conduzida por outro escritório credenciado).</p>
-                    </div>
-                </div>
-
-                <!-- Detalhamento Secundário -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
-                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
-                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
-                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
-                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
-                        
-                        <div class="mb-6">
-                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Visita presencial de SMG (sugestão dada por Socorro em reunião de feedback com MFSA) buscando entender o motivo de não estarmos recebendo novas ações.</li>
-                                <li><span class="font-semibold text-gray-800 block">Status:</span> Não iniciado.</li>
-                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Aumento de receita.</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
-                            <p class="text-sm text-gray-600 leading-relaxed">A expectativa de resultado é a mesma de março (Receita Bruta R$ 525,00), visto que não estamos recebendo novas ações desde a contratação.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECÇÃO: OMIO -->
-        <section id="omio" class="content-section">
-            <div class="bg-[#004080] text-white py-12 md:py-16">
-                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-                    <h2 class="text-4xl font-bold mb-2">CLIENTE: OMIO</h2>
-                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
-                    </p>
-                </div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-                <!-- Rentabilidade -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
-                    </h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Fevereiro -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 3.600,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 3.060,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-red-600">-R$ 2.059,78 [NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">-67,31%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Março -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 9.120,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 7.752,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 3.458,73 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">44,62%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Abril -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">[XX]%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
-                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
-                        <p class="text-gray-700 text-sm">Tivemos variação na margem de lucro em razão da entrada de novas ações, julgamentos e encerramentos (o contrato prevê pagamentos em cada uma destas fases).</p>
-                    </div>
-                </div>
-
-                <!-- Detalhamento Secundário -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
-                            <p class="text-sm text-gray-600">Não há.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
-                                <li>
-                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
-                                    <ul class="ml-4 mt-1 space-y-1">
-                                        <li><span class="font-semibold">Quantidade:</span> </li>
-                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
-                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
-                                    </ul>
-                                </li>
-                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
-                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
-                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
-                        
-                        <div class="mb-6">
-                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Realização de despachos com os Magistrados que possuem entendimento de responsabilização solidária da OMIO com as transportadoras – trazendo os julgados recentes que reconheceram a ilegitimidade passiva da empresa.</li>
-                                <li><span class="font-semibold text-gray-800 block">Status:</span> Iniciado.</li>
-                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Aumento na quantidade de decisões favoráveis.</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
-                            <p class="text-sm text-gray-600 leading-relaxed">Aumento da base em cerca de 5 processos (trata-se de projeção mensal, de acordo com o histórico de entradas) e consequentemente, do faturamento.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECÇÃO: JUNTOS -->
-        <section id="juntos" class="content-section">
-            <div class="bg-[#004080] text-white py-12 md:py-16">
-                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-                    <h2 class="text-4xl font-bold mb-2">CLIENTE: JUNTOS</h2>
-                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
-                    </p>
-                </div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-                <!-- Rentabilidade -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
-                    </h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Fevereiro -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 7.800,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 6.630,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$</span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 793,97 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">11,98%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Março -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 7.004,80</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 5.954,08</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 481,16 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">8,08%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Abril -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">[XX]%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
-                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
-                        <p class="text-gray-700 text-sm">Houve variação na margem de lucro em razão do encerramento de menos pastas (tivemos menos casos passíveis de encerramento), porém, em compensação, em março tivemos 2 demandas consultivas que acarretaram no “equilíbrio” com o faturamento anterior (representou R$ 1.200,00).</p>
-                    </div>
-                </div>
-
-                <!-- Detalhamento Secundário -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
-                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
-                                <li>
-                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
-                                    <ul class="ml-4 mt-1 space-y-1">
-                                        <li><span class="font-semibold">Quantidade:</span> </li>
-                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
-                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
-                                    </ul>
-                                </li>
-                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
-                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
-                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
-                        
-                        <div class="mb-6">
-                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Melhoria na análise e retorno dos subsídios.</li>
-                                <li><span class="font-semibold text-gray-800 block">Status:</span> Em andamento (conversamos com o cliente em reunião e as sugestões de melhorias já estão sendo implementadas).</li>
-                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> melhor argumentação/conjunto probatório em nossas defesas.</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
-                            <p class="text-sm text-gray-600 leading-relaxed">A projeção do mês seguinte possui média similar aos resultados anteriores, na média de 7 a 8k, sem prejuízos processuais.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECÇÃO: TOTVS -->
-        <section id="totvs" class="content-section">
-            <div class="bg-[#004080] text-white py-12 md:py-16">
-                <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-                    <h2 class="text-4xl font-bold mb-2">CLIENTE: TOTVS</h2>
-                    <p class="text-blue-100 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-user-tie"></i> COORDENADOR(A): MFSA | DADOS RAR - MARÇO
-                    </p>
-                </div>
-            </div>
-            
-            <div class="max-w-7xl mx-auto px-4 py-12 space-y-8">
-                <!-- Rentabilidade -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-pie text-blue-600"></i> 1. DADOS GERAIS E RENTABILIDADE
-                    </h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Fevereiro -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Fevereiro</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 8.670,00</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 7.369,50</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 386,80 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">5,25%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Março -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-green-500 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Março</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ 16.557,72</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ 14.074,06</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ </span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-green-600">R$ 2.655,06 [POSITIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">18,86%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Abril -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-gray-400 stat-card">
-                            <h4 class="font-bold text-lg text-gray-800 mb-4 uppercase text-center border-b pb-2">Abril</h4>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Bruta:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Receita Líquida:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="flex justify-between"><span class="text-gray-500">Custo Operacional:</span> <span class="font-semibold text-gray-800">R$ [Valor]</span></div>
-                                <div class="mt-3 pt-3 border-t flex justify-between items-center">
-                                    <span class="text-gray-500">Resultado Final:</span>
-                                    <span class="font-bold text-gray-500">R$ [Valor] [POSITIVO/NEGATIVO]</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-gray-500">Margem de Lucro:</span>
-                                    <span class="font-bold text-gray-800">[XX]%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-blue-50 p-6 rounded-2xl shadow-sm mt-6 border border-blue-100">
-                        <h4 class="font-bold text-blue-900 mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Análise do Coordenador</h4>
-                        <p class="text-gray-700 text-sm">Houve variação na margem de lucro em razão do recebimento de honorários em favor do escritório em 1 processo, o que representou metade do faturamento do mês de março.</p>
-                    </div>
-                </div>
-
-                <!-- Detalhamento Secundário -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-bullseye text-red-500 mr-2"></i>2. METAS CLIENTE</h4>
-                            <p class="text-sm text-gray-600"><span class="font-semibold">Desempenho por Região:</span> Não há.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-shield-halved text-green-500 mr-2"></i>3. QUALIDADE E RISCO</h4>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800">Prejuízos Processuais / Operacionais:</span> Não há.</li>
-                                <li>
-                                    <span class="font-semibold text-gray-800">Pagamentos Recebidos Em Atraso:</span>
-                                    <ul class="ml-4 mt-1 space-y-1">
-                                        <li><span class="font-semibold">Quantidade:</span> </li>
-                                        <li><span class="font-semibold">Motivos Identificados:</span> </li>
-                                        <li><span class="font-semibold">Tratativa:</span> [Como a equipe está atuando com esses clientes?]</li>
-                                    </ul>
-                                </li>
-                                <li><span class="font-semibold text-gray-800">NPS:</span> Não há.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-3 border-b pb-2"><i class="fa-solid fa-users text-blue-500 mr-2"></i>4. GESTÃO DA OPERAÇÃO E PESSOAS</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                <li><span class="font-semibold text-gray-800">Indicador de Turnover:</span> 0%</li>
-                                <li><span class="font-semibold text-gray-800">Progressões:</span> 0</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-full">
-                        <h4 class="font-bold text-gray-800 mb-4 border-b pb-2"><i class="fa-solid fa-rocket text-purple-500 mr-2"></i>5. PROJETOS E PROJEÇÕES FUTURAS</h4>
-                        
-                        <div class="mb-6">
-                            <h5 class="text-sm font-bold text-gray-700 mb-3 bg-gray-50 p-2 rounded">Projetos para o Desenvolvimento do Cliente:</h5>
-                            <ul class="text-sm text-gray-600 space-y-3">
-                                <li><span class="font-semibold text-gray-800 block">Ideia/Iniciativa:</span> Revisão de base para identificarmos – e nos anteciparmos em relação às iniciativas do cliente – processos passíveis de encerramento e/ou que possuam eventuais pendências de cumprimento de condenação, a fim de evitar futuros bloqueios (que são matéria sensível para o cliente). <br><br> Realização de impulsionamentos com as secretarias nos processos que estão parados a muito tempo (a base da TOTVS é praticamente toda migrada e antiga).</li>
-                                <li><span class="font-semibold text-gray-800 block">Status:</span> Em andamento.</li>
-                                <li><span class="font-semibold text-gray-800 block">Impacto Esperado:</span> Melhor satisfação do cliente em notar a nossa proatividade e compromisso em sanear os processos.</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-bold text-gray-700 mb-2 bg-gray-50 p-2 rounded">Projeções Futuras (Próximo Mês):</h5>
-                            <p class="text-sm text-gray-600 leading-relaxed">Maior quantidade de encerramento de pastas e consequentemente, maior satisfação do cliente. Com o saneamento da base, pretendemos identificar também, oportunidades de recebimento de honorários em favor do escritório.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-white border-t border-gray-100 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs">
-            <p>&copy; 2026 - Relatório de Coordenação MFSA</p>
-            <p class="mt-2 md:mt-0 font-bold tracking-widest">CONFIDENCIAL</p>
-        </div>
-    </footer>
-
-    <script>
-        function showSection(sectionId) {
-            // Esconde todas as seções
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Mostra a seção desejada
-            const target = document.getElementById(sectionId);
-            if (target) {
-                target.classList.add('active');
-            }
-
-            // Atualiza os estilos das abas de navegação
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('tab-active');
-            });
-            const activeBtn = document.getElementById('btn-' + sectionId);
-            if (activeBtn) {
-                activeBtn.classList.add('tab-active');
-            }
-
-            // Rola suavemente para o topo ao trocar de aba
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
+<body class="min-h-screen flex flex-col text-slate-800">
+ 
+   <header class="bg-brand-primary text-white sticky top-0 z-50 shadow-lg border-b border-brand-dark">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div class="flex items-center justify-between h-20">
+               <div class="flex-shrink-0 flex items-center gap-3">
+                   <div class="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
+                       <i class="fa-solid fa-chart-line text-brand-accent text-xl"></i>
+                   </div>
+                   <div>
+                       <span class="font-poppins font-bold text-lg tracking-tight uppercase block leading-tight">Coordenação</span>
+                       <span class="text-xs text-brand-accent font-semibold tracking-widest uppercase">MFSA</span>
+                   </div>
+               </div>
+               <nav class="flex space-x-1 h-full items-center text-sm font-semibold uppercase tracking-wider overflow-x-auto no-scrollbar">
+                   <button onclick="showSection('buser')" class="nav-btn tab-active px-5 py-7 transition-all whitespace-nowrap hover:text-brand-accent hover:bg-white/5" id="btn-buser">BUSER</button>
+                   <button onclick="showSection('principia')" class="nav-btn px-5 py-7 transition-all whitespace-nowrap text-slate-300 hover:text-brand-accent hover:bg-white/5" id="btn-principia">PRINCIPIA</button>
+                   <button onclick="showSection('omio')" class="nav-btn px-5 py-7 transition-all whitespace-nowrap text-slate-300 hover:text-brand-accent hover:bg-white/5" id="btn-omio">OMIO</button>
+                   <button onclick="showSection('juntos')" class="nav-btn px-5 py-7 transition-all whitespace-nowrap text-slate-300 hover:text-brand-accent hover:bg-white/5" id="btn-juntos">JUNTOS</button>
+                   <button onclick="showSection('totvs')" class="nav-btn px-5 py-7 transition-all whitespace-nowrap text-slate-300 hover:text-brand-accent hover:bg-white/5" id="btn-totvs">TOTVS</button>
+               </nav>
+           </div>
+       </div>
+   </header>
+ 
+   <main class="flex-grow">
+ 
+       <!-- SECÇÃO: BUSER -->
+       <section id="buser" class="content-section active">
+           <div class="bg-gradient-to-r from-brand-secondary to-brand-primary text-white py-12 shadow-inner">
+               <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
+                   <div>
+                       <h2 class="text-4xl font-poppins font-bold mb-3 tracking-tight">CLIENTE: BUSER</h2>
+                       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-blue-100 text-sm">
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-solid fa-user-tie text-brand-accent"></i> MFSA</span>
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-regular fa-calendar-alt text-brand-accent"></i> Dados RAR - Março</span>
+                       </div>
+                   </div>
+                   <i class="fa-solid fa-bus text-6xl text-white/10 hidden md:block mt-4 md:mt-0"></i>
+               </div>
+           </div>
+ 
+           <div class="max-w-7xl mx-auto px-4 py-10 space-y-10">
+               <!-- Rentabilidade BUSER -->
+               <div>
+                   <h3 class="font-poppins text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                       <span class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-wallet"></i></span>
+                       1. Dados Gerais e Rentabilidade
+                   </h3>
+                   <div class="grid md:grid-cols-3 gap-6">
+                       <!-- Fevereiro -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-slate-400 stat-card">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Fevereiro <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">Fechado</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 12.380,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 10.523,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 8.976,06</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 1.546,94</span>
+                                           <span class="font-bold text-emerald-700">14,70%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 12.380,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 10.523,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 12.875,98</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 2.352,98</span>
+                                           <span class="font-bold text-red-700">-22,36%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Março -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-slate-400 stat-card ring-2 ring-slate-400/20">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Março <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded font-bold">Atual</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 13.080,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 11.118,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 10.703,77</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 414,23</span>
+                                           <span class="font-bold text-emerald-700">3,73%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 13.080,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 11.118,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 14.730,12</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 3.612,12</span>
+                                           <span class="font-bold text-red-700">-32,49%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Abril -->
+                       <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-dashed border-slate-200 dashed-card stat-card opacity-90">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b border-slate-200 pb-3">
+                               Abril <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-600">Projeção</span>
+                           </h4>
+                           <div class="space-y-4 text-sm text-slate-700">
+                               <div class="flex justify-between"><span class="text-slate-500">Receita Bruta:</span> <span class="font-semibold text-slate-800">R$ 7.110,00</span></div>
+                               <div class="flex justify-between"><span class="text-slate-500">Reembolso:</span> <span class="font-semibold text-slate-800">R$ 60.454,65</span></div>
+                               <div class="mt-4 pt-4 border-t border-slate-200">
+                                   <div class="bg-amber-50 text-amber-800 p-3 rounded-xl border border-amber-100 text-xs leading-relaxed">
+                                       <span class="font-bold block mb-1">OBS:</span> Tendo em vista que estávamos adiantando altos valores de condenações/custas/acordos, alinhamos com o cliente que eles aumentariam o valor do nosso caixa para R$ 55.000,00 (que anteriormente era R$ 30.000,00).
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <div class="bg-blue-50/80 p-5 rounded-xl border border-blue-200/60 mt-6 shadow-sm flex gap-4 items-start">
+                       <div class="bg-blue-100 text-blue-600 p-2 rounded-full mt-1"><i class="fa-solid fa-comment-dots"></i></div>
+                       <div>
+                           <h4 class="font-poppins font-bold text-blue-900 mb-1">Análise do Coordenador</h4>
+                           <ul class="text-slate-700 text-sm leading-relaxed space-y-2 list-disc ml-4">
+                               <li>Em fevereiro encerramos mais pastas, impactando positivamente no faturamento.</li>
+                               <li>Tivemos 38 pastas ativas a mais em março, em comparação com fevereiro.</li>
+                               <li>Em março houve valores de "terceirização controladoria" (R$ 602,08).</li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+ 
+               <!-- Detalhamento Secundário -->
+               <div class="grid md:grid-cols-2 gap-6">
+                   <div class="space-y-6">
+                       <!-- Metas -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-red-100 text-red-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+                               2. Metas Cliente
+                           </h4>
+                           <div class="text-sm text-slate-600 flex items-center gap-2">
+                               <span class="font-semibold text-slate-800">Desempenho por Região:</span>
+                               <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500">Não há</span>
+                           </div>
+                       </div>
+ 
+                       <!-- Qualidade -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-emerald-100 text-emerald-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+                               3. Qualidade e Risco
+                           </h4>
+                           <ul class="text-sm text-slate-600 space-y-4">
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800 block">Prejuízos Processuais / Operacionais:</span> Não há.</div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-clock-rotate-left text-amber-500 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800">Pagamentos Recebidos Em Atraso:</span> <span class="text-slate-600">Não houve.</span></div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-star text-slate-400 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800">NPS:</span> <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500 ml-1">Não há</span></div>
+                               </li>
+                           </ul>
+                       </div>
+ 
+                       <!-- Gestão -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-blue-100 text-blue-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+                               4. Gestão da Operação e Pessoas
+                           </h4>
+                           <div class="grid grid-cols-2 gap-4">
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Turnover</span>
+                                   <span class="text-2xl font-bold text-slate-800">0%</span>
+                               </div>
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Progressões</span>
+                                   <span class="text-2xl font-bold text-slate-800">0</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <!-- Projetos -->
+                   <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 h-full flex flex-col">
+                       <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                           <div class="bg-purple-100 text-purple-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-rocket"></i></div>
+                           5. Projetos e Projeções Futuras
+                       </h4>
+ 
+                       <div class="mb-8">
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-4 inline-block border-b-2 border-purple-200 pb-1">Projetos para o Desenvolvimento:</h5>
+                           <div class="bg-purple-50/50 rounded-xl p-5 border border-purple-100">
+                               <div class="space-y-4 text-sm text-slate-600">
+                                   <div>
+                                       <span class="font-semibold text-purple-900 block mb-1"><i class="fa-regular fa-lightbulb text-purple-500 mr-1"></i> Ideia/Iniciativa:</span>
+                                       <p class="leading-relaxed">Realização de despachos com os Magistrados que possuem entendimento de responsabilização solidária da BUSER com as transportadoras – trazendo os julgados recentes do nosso cliente OMIO (pois possui a mesma natureza e modelo de negócio, e nele, temos mais reconhecimentos de ilegitimidade passiva) que reconheceram a ilegitimidade passiva da empresa.</p>
+                                   </div>
+                                   <div class="flex items-center gap-2">
+                                       <span class="font-semibold text-slate-800">Status:</span>
+                                       <span class="bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full text-xs font-bold">Iniciado</span>
+                                   </div>
+                                   <div>
+                                       <span class="font-semibold text-slate-800 block mb-1">Impacto Esperado:</span>
+                                       <p class="text-emerald-600 bg-emerald-50 p-2 rounded">Aumento na quantidade de decisões favoráveis.</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+ 
+                       <div class="space-y-6 flex-grow">
+                           <div>
+                               <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-blue-200 pb-1">Projeções Futuras (Próximo Mês):</h5>
+                               <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                   <p class="text-sm text-slate-700 leading-relaxed"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i>Aumento da base nos próximos meses em razão de pretensão de Amanda (cliente), e consequentemente, o faturamento.</p>
+                               </div>
+                           </div>
+                           
+                           <div>
+                               <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-amber-200 pb-1">Iniciativas:</h5>
+                               <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                                   <p class="text-sm text-slate-700 leading-relaxed"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>"Plano de ação" para o cliente não desembolsar valores em condenações solidárias com as transportadoras (exceto nos casos em que a corré é a EXPRESSO ADAMANTINA, pois está em RJ).</p>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+ 
+       <!-- SECÇÃO: PRINCIPIA -->
+       <section id="principia" class="content-section">
+           <div class="bg-gradient-to-r from-brand-secondary to-brand-primary text-white py-12 shadow-inner">
+               <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
+                   <div>
+                       <h2 class="text-4xl font-poppins font-bold mb-3 tracking-tight">CLIENTE: PRINCIPIA</h2>
+                       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-blue-100 text-sm">
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-solid fa-user-tie text-brand-accent"></i> MFSA (Marina)</span>
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-regular fa-calendar-alt text-brand-accent"></i> Dados RAR - Março</span>
+                       </div>
+                   </div>
+                   <i class="fa-solid fa-building-columns text-6xl text-white/10 hidden md:block mt-4 md:mt-0"></i>
+               </div>
+           </div>
+ 
+           <div class="max-w-7xl mx-auto px-4 py-10 space-y-10">
+               <!-- Rentabilidade PRINCIPIA -->
+               <div>
+                   <h3 class="font-poppins text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                       <span class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-wallet"></i></span>
+                       1. Dados Gerais e Rentabilidade
+                   </h3>
+                   <div class="grid md:grid-cols-3 gap-6">
+                       <!-- Fevereiro -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-red-500 stat-card">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Fevereiro <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">Fechado</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 600,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 510,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 1.032,43</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 522,43</span>
+                                           <span class="font-bold text-red-700">-102,44%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 600,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 510,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 1.055,95</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 545,95</span>
+                                           <span class="font-bold text-red-700">-107,05%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Março -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-red-500 stat-card ring-2 ring-red-500/20">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Março <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded font-bold">Atual</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 525,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 446,25</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 1.051,10</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 604,85</span>
+                                           <span class="font-bold text-red-700">-135,54%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 525,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 446,25</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 1.167,76</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 721,51</span>
+                                           <span class="font-bold text-red-700">-161,68%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Abril -->
+                       <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-dashed border-slate-200 dashed-card stat-card opacity-90">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b border-slate-200 pb-3">
+                               Abril <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-600">Projeção</span>
+                           </h4>
+                           <div class="space-y-4 text-sm text-slate-700">
+                               <div class="flex justify-between"><span class="text-slate-500">Receita Bruta:</span> <span class="font-semibold text-slate-800">R$ 525,00</span></div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <div class="bg-blue-50/80 p-5 rounded-xl border border-blue-200/60 mt-6 shadow-sm flex gap-4 items-start">
+                       <div class="bg-blue-100 text-blue-600 p-2 rounded-full mt-1"><i class="fa-solid fa-comment-dots"></i></div>
+                       <div>
+                           <h4 class="font-poppins font-bold text-blue-900 mb-1">Análise do Coordenador</h4>
+                           <p class="text-slate-700 text-sm leading-relaxed">Tivemos variação na margem de lucro no período acima em razão da descontratação de 1 pasta (cuja matéria é conduzida por outro escritório credenciado).</p>
+                       </div>
+                   </div>
+               </div>
+ 
+               <div class="grid md:grid-cols-2 gap-6">
+                   <div class="space-y-6">
+                       <!-- Metas -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-red-100 text-red-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+                               2. Metas Cliente
+                           </h4>
+                           <div class="text-sm text-slate-600 flex items-center gap-2">
+                               <span class="font-semibold text-slate-800">Desempenho por Região:</span>
+                               <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500">Não há</span>
+                           </div>
+                       </div>
+ 
+                       <!-- Qualidade -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-emerald-100 text-emerald-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+                               3. Qualidade e Risco
+                           </h4>
+                           <ul class="text-sm text-slate-600 space-y-4">
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800 block">Prejuízos Processuais / Operacionais:</span> Não há.</div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-star text-slate-400 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800">NPS:</span> <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500 ml-1">Não há</span></div>
+                               </li>
+                           </ul>
+                       </div>
+ 
+                       <!-- Gestão -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-blue-100 text-blue-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+                               4. Gestão da Operação e Pessoas
+                           </h4>
+                           <div class="grid grid-cols-2 gap-4">
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Turnover</span>
+                                   <span class="text-2xl font-bold text-slate-800">0%</span>
+                               </div>
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Progressões</span>
+                                   <span class="text-2xl font-bold text-slate-800">0</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <!-- Projetos -->
+                   <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 h-full flex flex-col">
+                       <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                           <div class="bg-purple-100 text-purple-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-rocket"></i></div>
+                           5. Projetos e Projeções Futuras
+                       </h4>
+ 
+                       <div class="mb-8 flex-grow">
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-4 inline-block border-b-2 border-purple-200 pb-1">Projetos para o Desenvolvimento:</h5>
+                           <div class="bg-purple-50/50 rounded-xl p-5 border border-purple-100">
+                               <div class="space-y-4 text-sm text-slate-600">
+                                   <div>
+                                       <span class="font-semibold text-purple-900 block mb-1"><i class="fa-regular fa-lightbulb text-purple-500 mr-1"></i> Ideia/Iniciativa:</span>
+                                       <p class="leading-relaxed">Visita presencial de SMG (sugestão dada por Socorro em reunião de feedback com MFSA) buscando entender o motivo de não estarmos recebendo novas ações.</p>
+                                   </div>
+                                   <div class="flex items-center gap-2">
+                                       <span class="font-semibold text-slate-800">Status:</span>
+                                       <span class="bg-slate-200 text-slate-600 px-2.5 py-0.5 rounded-full text-xs font-bold">Não iniciado</span>
+                                   </div>
+                                   <div>
+                                       <span class="font-semibold text-slate-800 block mb-1">Impacto Esperado:</span>
+                                       <p class="text-emerald-600 bg-emerald-50 p-2 rounded">Aumento de entradas e consequentemente, da receita.</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+ 
+                       <div>
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-blue-200 pb-1">Projeções Futuras (Próximo Mês):</h5>
+                           <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                               <p class="text-sm text-slate-700 leading-relaxed"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i>A expectativa de resultado é a mesma de março (Receita Bruta R$ 525,00), visto que não estamos recebendo novas ações desde a contratação até o momento.</p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+ 
+       <!-- SECÇÃO: OMIO -->
+       <section id="omio" class="content-section">
+           <div class="bg-gradient-to-r from-brand-secondary to-brand-primary text-white py-12 shadow-inner">
+               <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
+                   <div>
+                       <h2 class="text-4xl font-poppins font-bold mb-3 tracking-tight">CLIENTE: OMIO</h2>
+                       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-blue-100 text-sm">
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-solid fa-user-tie text-brand-accent"></i> MFSA</span>
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-regular fa-calendar-alt text-brand-accent"></i> Dados RAR - Março</span>
+                       </div>
+                   </div>
+                   <i class="fa-solid fa-plane-departure text-6xl text-white/10 hidden md:block mt-4 md:mt-0"></i>
+               </div>
+           </div>
+ 
+           <div class="max-w-7xl mx-auto px-4 py-10 space-y-10">
+               <!-- Rentabilidade OMIO -->
+               <div>
+                   <h3 class="font-poppins text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                       <span class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-wallet"></i></span>
+                       1. Dados Gerais e Rentabilidade
+                   </h3>
+                   <div class="grid md:grid-cols-3 gap-6">
+                       <!-- Fevereiro -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-slate-400 stat-card">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Fevereiro <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">Fechado</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 3.600,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 3.060,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 5.119,78</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 2.059,78</span>
+                                           <span class="font-bold text-red-700">-67,31%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 3.600,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 3.060,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 4.918,41</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 1.858,41</span>
+                                           <span class="font-bold text-red-700">-60,73%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Março -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-slate-400 stat-card ring-2 ring-slate-400/20">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Março <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded font-bold">Atual</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 9.120,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 7.752,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 4.293,27</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 3.458,73</span>
+                                           <span class="font-bold text-emerald-700">44,62%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 9.120,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 7.752,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 4.543,65</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 3.208,35</span>
+                                           <span class="font-bold text-emerald-700">41,39%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Abril -->
+                       <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-dashed border-slate-200 dashed-card stat-card opacity-90">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b border-slate-200 pb-3">
+                               Abril <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-600">Projeção</span>
+                           </h4>
+                           <div class="space-y-4 text-sm text-slate-700">
+                               <div class="flex justify-between"><span class="text-slate-500">Receita Bruta:</span> <span class="font-semibold text-slate-800">R$ 14.400,00</span></div>
+                               <div class="flex justify-between"><span class="text-slate-500">Reembolsos:</span> <span class="font-semibold text-slate-800">R$ 4.496,54</span></div>
+                               <div class="mt-4 pt-4 border-t border-slate-200">
+                                   <div class="bg-amber-50 text-amber-800 p-3 rounded-xl border border-amber-100 text-xs leading-relaxed">
+                                       <span class="font-bold block mb-1">OBS:</span> Quando atingirmos 50 processos na base, o valor das cobranças por pasta (entradas, decisões e encerramentos) diminuirá, conforme contrato.
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <div class="bg-blue-50/80 p-5 rounded-xl border border-blue-200/60 mt-6 shadow-sm flex gap-4 items-start">
+                       <div class="bg-blue-100 text-blue-600 p-2 rounded-full mt-1"><i class="fa-solid fa-comment-dots"></i></div>
+                       <div>
+                           <h4 class="font-poppins font-bold text-blue-900 mb-1">Análise do Coordenador</h4>
+                           <p class="text-slate-700 text-sm leading-relaxed">Tivemos variação na margem de lucro em razão da entrada de novas ações (de fevereiro para março tivemos 9 novas ações, e de março para abril, 11 novas ações), julgamentos e encerramentos (o contrato prevê pagamentos em cada uma destas fases).</p>
+                       </div>
+                   </div>
+               </div>
+ 
+               <div class="grid md:grid-cols-2 gap-6">
+                   <div class="space-y-6">
+                       <!-- Metas -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-red-100 text-red-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+                               2. Metas Cliente
+                           </h4>
+                           <div class="text-sm text-slate-600 flex items-center gap-2">
+                               <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500">Não há</span>
+                           </div>
+                       </div>
+ 
+                       <!-- Qualidade -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-emerald-100 text-emerald-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+                               3. Qualidade e Risco
+                           </h4>
+                           <ul class="text-sm text-slate-600 space-y-4">
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800 block">Prejuízos Processuais / Operacionais:</span> Não há.</div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-clock-rotate-left text-amber-500 mt-1"></i>
+                                   <div class="w-full">
+                                       <span class="font-semibold text-slate-800 block mb-2">Pagamentos Recebidos Em Atraso:</span>
+                                       <div class="bg-slate-50 p-3 rounded-lg space-y-2 border border-slate-100">
+                                           <div class="flex justify-between"><span class="font-medium text-slate-500">Quantidade:</span> <span class="text-slate-800 font-semibold">2 semanas de atraso</span></div>
+                                           <div><span class="font-medium text-slate-500 block mb-1">Motivos:</span> <span class="text-slate-700">A análise do cliente tende a demorar.</span></div>
+                                           <div class="pt-2 border-t border-slate-200 mt-2"><span class="font-medium text-slate-500 block mb-1">Tratativa:</span> <span class="text-slate-700">Realizamos a cobrança ao cliente, que nos retornou pedindo desculpas pelo atraso. Geralmente eles levam cerca de 2 semanas para autorizar o faturamento e reembolso.</span></div>
+                                       </div>
+                                   </div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-star text-slate-400 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800">NPS:</span> <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500 ml-1">Não há</span></div>
+                               </li>
+                           </ul>
+                       </div>
+ 
+                       <!-- Gestão -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-blue-100 text-blue-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+                               4. Gestão da Operação e Pessoas
+                           </h4>
+                           <div class="grid grid-cols-2 gap-4">
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Turnover</span>
+                                   <span class="text-2xl font-bold text-slate-800">0%</span>
+                               </div>
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Progressões</span>
+                                   <span class="text-2xl font-bold text-slate-800">0</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <!-- Projetos -->
+                   <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 h-full flex flex-col">
+                       <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                           <div class="bg-purple-100 text-purple-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-rocket"></i></div>
+                           5. Projetos e Projeções Futuras
+                       </h4>
+ 
+                       <div class="mb-8 flex-grow space-y-4">
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-2 inline-block border-b-2 border-purple-200 pb-1">Projetos para o Desenvolvimento:</h5>
+                           
+                           <!-- Iniciativa 1 -->
+                           <div class="bg-purple-50/50 rounded-xl p-5 border border-purple-100">
+                               <div class="space-y-4 text-sm text-slate-600">
+                                   <div>
+                                       <span class="font-semibold text-purple-900 block mb-1"><i class="fa-regular fa-lightbulb text-purple-500 mr-1"></i> Ideia/Iniciativa 1:</span>
+                                       <p class="leading-relaxed">Realização de despachos com os Magistrados que possuem entendimento de responsabilização solidária da OMIO com as transportadoras – trazendo os julgados recentes que reconheceram a ilegitimidade passiva da empresa.</p>
+                                   </div>
+                                   <div class="flex items-center gap-2">
+                                       <span class="font-semibold text-slate-800">Status:</span>
+                                       <span class="bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full text-xs font-bold">Iniciado</span>
+                                   </div>
+                                   <div>
+                                       <span class="font-semibold text-slate-800 block mb-1">Impacto Esperado:</span>
+                                       <p class="text-emerald-600 bg-emerald-50 p-2 rounded">Aumento na quantidade de decisões favoráveis.</p>
+                                   </div>
+                               </div>
+                           </div>
+ 
+                           <!-- Iniciativa 2 -->
+                           <div class="bg-purple-50/50 rounded-xl p-5 border border-purple-100">
+                               <div class="space-y-4 text-sm text-slate-600">
+                                   <div>
+                                       <span class="font-semibold text-purple-900 block mb-1"><i class="fa-regular fa-lightbulb text-purple-500 mr-1"></i> Ideia/Iniciativa 2:</span>
+                                       <p class="leading-relaxed">Implementação do LEGIS para o cliente ter acesso aos processos em tempo real.</p>
+                                   </div>
+                                   <div class="flex items-center gap-2">
+                                       <span class="font-semibold text-slate-800">Status:</span>
+                                       <span class="bg-slate-200 text-slate-600 px-2.5 py-0.5 rounded-full text-xs font-bold">A iniciar</span>
+                                   </div>
+                                   <div>
+                                       <span class="font-semibold text-slate-800 block mb-1">Impacto Esperado:</span>
+                                       <p class="text-emerald-600 bg-emerald-50 p-2 rounded">Satisfação do cliente, tendo em vista que quando apresentamos a proposta de contratação, foi prometido o acesso a sistema.</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+ 
+                       <div>
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-blue-200 pb-1">Projeções Futuras (Próximo Mês):</h5>
+                           <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                               <p class="text-sm text-slate-700 leading-relaxed"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i>Aumento mensal da base de 7 a 10 processos (trata-se de projeção realizada de acordo com o histórico de entradas até o momento) e consequentemente, do faturamento.</p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+ 
+       <!-- SECÇÃO: JUNTOS -->
+       <section id="juntos" class="content-section">
+           <div class="bg-gradient-to-r from-brand-secondary to-brand-primary text-white py-12 shadow-inner">
+               <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
+                   <div>
+                       <h2 class="text-4xl font-poppins font-bold mb-3 tracking-tight">CLIENTE: JUNTOS</h2>
+                       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-blue-100 text-sm">
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-solid fa-user-tie text-brand-accent"></i> MFSA</span>
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-regular fa-calendar-alt text-brand-accent"></i> Dados RAR - Março</span>
+                       </div>
+                   </div>
+                   <i class="fa-solid fa-handshake-angle text-6xl text-white/10 hidden md:block mt-4 md:mt-0"></i>
+               </div>
+           </div>
+ 
+           <div class="max-w-7xl mx-auto px-4 py-10 space-y-10">
+               <!-- Rentabilidade JUNTOS -->
+               <div>
+                   <h3 class="font-poppins text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                       <span class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-wallet"></i></span>
+                       1. Dados Gerais e Rentabilidade
+                   </h3>
+                   <div class="grid md:grid-cols-3 gap-6">
+                       <!-- Fevereiro -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-slate-400 stat-card">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Fevereiro <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">Fechado</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 7.800,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 6.630,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 5.836,03</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 793,97</span>
+                                           <span class="font-bold text-emerald-700">11,98%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 7.800,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 6.630,00</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 5.849,55</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 780,45</span>
+                                           <span class="font-bold text-emerald-700">11,77%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Março -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-slate-400 stat-card ring-2 ring-slate-400/20">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Março <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded font-bold">Atual</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 7.004,80</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 5.954,08</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 5.472,92</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 481,16</span>
+                                           <span class="font-bold text-emerald-700">8,08%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-red-50/50 p-3 rounded-xl border border-red-100">
+                                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 7.004,80</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 5.954,08</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 6.458,19</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-red-200/50 mt-2">
+                                           <span class="font-semibold text-red-700">-R$ 504,11</span>
+                                           <span class="font-bold text-red-700">-8,47%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Abril -->
+                       <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-dashed border-slate-200 dashed-card stat-card opacity-90">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b border-slate-200 pb-3">
+                               Abril <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-600">Projeção</span>
+                           </h4>
+                           <div class="space-y-4 text-sm text-slate-700">
+                               <div class="flex justify-between"><span class="text-slate-500">Receita Bruta:</span> <span class="font-semibold text-slate-800">R$ 4.050,00</span></div>
+                               <div class="mt-4 pt-4 border-t border-slate-200">
+                                   <div class="bg-amber-50 text-amber-800 p-3 rounded-xl border border-amber-100 text-xs leading-relaxed">
+                                       <span class="font-bold block mb-1">OBS:</span> Tivemos 1 demanda consultiva, que ainda não sabemos o valor do partido, pois estamos aguardando a informação pelo financeiro.
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <div class="bg-blue-50/80 p-5 rounded-xl border border-blue-200/60 mt-6 shadow-sm flex gap-4 items-start">
+                       <div class="bg-blue-100 text-blue-600 p-2 rounded-full mt-1"><i class="fa-solid fa-comment-dots"></i></div>
+                       <div>
+                           <h4 class="font-poppins font-bold text-blue-900 mb-1">Análise do Coordenador</h4>
+                           <ul class="text-slate-700 text-sm leading-relaxed space-y-2 list-disc ml-4">
+                               <li>De março para fevereiro a base de ativos contava com mais 22 processos. Porém, encerramos menos pastas (tivemos menos casos passíveis de encerramento).</li>
+                               <li>Em compensação, em março tivemos 2 demandas consultivas que acarretaram no “equilíbrio” com o faturamento anterior (representou R$ 1.200,00).</li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+ 
+               <div class="grid md:grid-cols-2 gap-6">
+                   <div class="space-y-6">
+                       <!-- Metas -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-red-100 text-red-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+                               2. Metas Cliente
+                           </h4>
+                           <div class="text-sm text-slate-600 flex items-center gap-2">
+                               <span class="font-semibold text-slate-800">Desempenho por Região:</span>
+                               <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500">Não há</span>
+                           </div>
+                       </div>
+ 
+                       <!-- Qualidade -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-emerald-100 text-emerald-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+                               3. Qualidade e Risco
+                           </h4>
+                           <ul class="text-sm text-slate-600 space-y-4">
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800 block">Prejuízos Processuais / Operacionais:</span> Não há.</div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-clock-rotate-left text-amber-500 mt-1"></i>
+                                   <div class="w-full">
+                                       <span class="font-semibold text-slate-800 block mb-2">Pagamentos Recebidos Em Atraso:</span>
+                                       <div class="bg-slate-50 p-3 rounded-lg space-y-2 border border-slate-100">
+                                           <span class="text-slate-600">Não há.</span>
+                                       </div>
+                                   </div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-star text-slate-400 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800">NPS:</span> <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500 ml-1">Não há</span></div>
+                               </li>
+                           </ul>
+                       </div>
+ 
+                       <!-- Gestão -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-blue-100 text-blue-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+                               4. Gestão da Operação e Pessoas
+                           </h4>
+                           <div class="grid grid-cols-2 gap-4">
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Turnover</span>
+                                   <span class="text-2xl font-bold text-slate-800">0%</span>
+                               </div>
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Progressões</span>
+                                   <span class="text-2xl font-bold text-slate-800">0</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <!-- Projetos -->
+                   <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 h-full flex flex-col">
+                       <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                           <div class="bg-purple-100 text-purple-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-rocket"></i></div>
+                           5. Projetos e Projeções Futuras
+                       </h4>
+ 
+                       <div class="mb-8">
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-4 inline-block border-b-2 border-purple-200 pb-1">Projetos para o Desenvolvimento:</h5>
+                           <div class="bg-purple-50/50 rounded-xl p-5 border border-purple-100">
+                               <div class="space-y-4 text-sm text-slate-600">
+                                   <div>
+                                       <span class="font-semibold text-purple-900 block mb-1"><i class="fa-regular fa-lightbulb text-purple-500 mr-1"></i> Ideia/Iniciativa:</span>
+                                       <p class="leading-relaxed mb-3">Melhoria na análise e retorno dos subsídios.</p>
+                                   </div>
+                                   <div class="flex items-center gap-2">
+                                       <span class="font-semibold text-slate-800">Status:</span>
+                                       <span class="bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full text-xs font-bold">Em andamento</span>
+                                       <span class="text-xs text-slate-500 italic">(já em implementação com cliente)</span>
+                                   </div>
+                                   <div>
+                                       <span class="font-semibold text-slate-800 block mb-1">Impacto Esperado:</span>
+                                       <p class="text-emerald-600 bg-emerald-50 p-2 rounded">Melhor argumentação/conjunto probatório em nossas defesas.</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+ 
+                       <div class="space-y-6 flex-grow">
+                           <div>
+                               <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-blue-200 pb-1">Projeções Futuras (Próximo Mês):</h5>
+                               <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                   <p class="text-sm text-slate-700 leading-relaxed"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i>A projeção do mês seguinte possui média similar aos resultados anteriores, na média de 7 a 8k, sem prejuízos processuais.</p>
+                               </div>
+                           </div>
+ 
+                           <div>
+                               <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-red-200 pb-1">Aviso Importante:</h5>
+                               <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                                   <p class="text-sm text-red-700 font-semibold leading-relaxed"><i class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i>OBS: Seremos descontratados no mês de maio.</p>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+ 
+       <!-- SECÇÃO: TOTVS -->
+       <section id="totvs" class="content-section">
+           <div class="bg-gradient-to-r from-brand-secondary to-brand-primary text-white py-12 shadow-inner">
+               <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
+                   <div>
+                       <h2 class="text-4xl font-poppins font-bold mb-3 tracking-tight">CLIENTE: TOTVS</h2>
+                       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-blue-100 text-sm">
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-solid fa-user-tie text-brand-accent"></i> MFSA</span>
+                           <span class="flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full"><i class="fa-regular fa-calendar-alt text-brand-accent"></i> Dados RAR - Março</span>
+                       </div>
+                   </div>
+                   <i class="fa-solid fa-server text-6xl text-white/10 hidden md:block mt-4 md:mt-0"></i>
+               </div>
+           </div>
+ 
+           <div class="max-w-7xl mx-auto px-4 py-10 space-y-10">
+               <!-- Rentabilidade TOTVS -->
+               <div>
+                   <h3 class="font-poppins text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                       <span class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fa-solid fa-wallet"></i></span>
+                       1. Dados Gerais e Rentabilidade
+                   </h3>
+                   <div class="grid md:grid-cols-3 gap-6">
+                       <!-- Fevereiro -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-emerald-500 stat-card">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Fevereiro <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">Fechado</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 8.670,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 7.369,50</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 6.982,70</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 386,80</span>
+                                           <span class="font-bold text-emerald-700">5,25%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 8.670,00</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 7.369,50</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 6.863,75</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 505,75</span>
+                                           <span class="font-bold text-emerald-700">6,86%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Março -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-emerald-500 stat-card ring-2 ring-emerald-500/20">
+                           <h4 class="font-poppins font-bold text-lg text-slate-700 mb-4 uppercase flex justify-between items-center border-b pb-3">
+                               Março <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold">Atual</span>
+                           </h4>
+                           <div class="space-y-3">
+                               <!-- Ajustada -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Ajustada</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 16.557,72</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 14.074,06</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 11.419,01</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 2.655,06</span>
+                                           <span class="font-bold text-emerald-700">18,86%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- Real -->
+                               <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                                   <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">Projeção Real</span>
+                                   <div class="space-y-1 text-xs text-slate-600">
+                                       <div class="flex justify-between"><span>Bruta:</span> <span class="font-semibold text-slate-800">R$ 16.557,72</span></div>
+                                       <div class="flex justify-between"><span>Líquida:</span> <span class="font-semibold text-slate-800">R$ 14.074,06</span></div>
+                                       <div class="flex justify-between"><span>Custo Op:</span> <span class="font-semibold text-slate-800">R$ 8.891,81</span></div>
+                                       <div class="flex justify-between items-center pt-2 border-t border-emerald-200/50 mt-2">
+                                           <span class="font-semibold text-emerald-700">R$ 5.182,26</span>
+                                           <span class="font-bold text-emerald-700">36,82%</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- Abril -->
+                       <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-dashed border-slate-200 dashed-card stat-card opacity-90">
+                           <h4 class="font-poppins font-bold text-lg text-slate-500 mb-4 uppercase flex justify-between items-center border-b border-slate-200 pb-3">
+                               Abril <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-600">Projeção</span>
+                           </h4>
+                           <div class="space-y-4 text-sm text-slate-400">
+                               <div class="flex justify-between"><span>Receita Bruta:</span> <span class="font-mono bg-slate-100 px-2 rounded">[Valor]</span></div>
+                               <div class="flex justify-between"><span>Receita Líquida:</span> <span class="font-mono bg-slate-100 px-2 rounded">[Valor]</span></div>
+                               <div class="flex justify-between"><span>Custo Operacional:</span> <span class="font-mono bg-slate-100 px-2 rounded">[Valor]</span></div>
+                               <div class="mt-4 pt-4 border-t border-slate-200">
+                                   <div class="flex justify-between items-center mb-2">
+                                       <span class="font-medium">Resultado Final:</span>
+                                       <span class="font-mono bg-slate-100 px-2 rounded">[Valor]</span>
+                                   </div>
+                                   <div class="flex justify-between items-center">
+                                       <span>Margem de Lucro:</span>
+                                       <span class="font-mono bg-slate-100 px-2 rounded">[XX]%</span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <div class="bg-blue-50/80 p-5 rounded-xl border border-blue-200/60 mt-6 shadow-sm flex gap-4 items-start">
+                       <div class="bg-blue-100 text-blue-600 p-2 rounded-full mt-1"><i class="fa-solid fa-comment-dots"></i></div>
+                       <div>
+                           <h4 class="font-poppins font-bold text-blue-900 mb-1">Análise do Coordenador</h4>
+                           <p class="text-slate-700 text-sm leading-relaxed">Houve variação na margem de lucro em razão do recebimento de honorários em favor do escritório em 1 processo, o que representou metade do faturamento do mês de março.</p>
+                       </div>
+                   </div>
+               </div>
+ 
+               <div class="grid md:grid-cols-2 gap-6">
+                   <div class="space-y-6">
+                       <!-- Metas -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-red-100 text-red-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+                               2. Metas Cliente
+                           </h4>
+                           <div class="text-sm text-slate-600 flex items-center gap-2">
+                               <span class="font-semibold text-slate-800">Desempenho por Região:</span>
+                               <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500">Não há</span>
+                           </div>
+                       </div>
+ 
+                       <!-- Qualidade -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-emerald-100 text-emerald-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+                               3. Qualidade e Risco
+                           </h4>
+                           <ul class="text-sm text-slate-600 space-y-4">
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800 block">Prejuízos Processuais / Operacionais:</span> Não há.</div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-clock-rotate-left text-amber-500 mt-1"></i>
+                                   <div class="w-full">
+                                       <span class="font-semibold text-slate-800 block mb-2">Pagamentos Recebidos Em Atraso:</span>
+                                       <div class="bg-amber-50 p-4 rounded-lg space-y-3 border border-amber-200">
+                                           <p class="text-sm text-amber-900 font-medium">O financeiro identificou a ausência de reembolso de valores que foram adiantados e nos sinalizou apenas no dia 12/05.</p>
+                                           <div class="flex justify-between border-t border-amber-200/50 pt-2"><span class="font-medium text-amber-800">Quantidade:</span> <span class="font-bold text-amber-900">meses de atraso</span></div>
+                                           <div><span class="font-medium text-amber-800 block mb-1">Motivos Identificados:</span> <span class="text-amber-900">Iremos apurar junto ao cliente.</span></div>
+                                           <div><span class="font-medium text-amber-800 block mb-1">Tratativa:</span> <span class="text-amber-900">Estamos atuando junto com o financeiro para entendermos o que aconteceu.</span></div>
+                                       </div>
+                                   </div>
+                               </li>
+                               <li class="flex items-start gap-2">
+                                   <i class="fa-solid fa-star text-slate-400 mt-1"></i>
+                                   <div><span class="font-semibold text-slate-800">NPS:</span> <span class="bg-slate-100 px-2 py-0.5 rounded text-slate-500 ml-1">Não há</span></div>
+                               </li>
+                           </ul>
+                       </div>
+ 
+                       <!-- Gestão -->
+                       <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                           <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                               <div class="bg-blue-100 text-blue-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+                               4. Gestão da Operação e Pessoas
+                           </h4>
+                           <div class="grid grid-cols-2 gap-4">
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Turnover</span>
+                                   <span class="text-2xl font-bold text-slate-800">0%</span>
+                               </div>
+                               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                                   <span class="block text-slate-500 text-xs uppercase tracking-wider mb-1">Progressões</span>
+                                   <span class="text-2xl font-bold text-slate-800">0</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+ 
+                   <!-- Projetos -->
+                   <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 h-full flex flex-col">
+                       <h4 class="font-poppins font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+                           <div class="bg-purple-100 text-purple-500 w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-rocket"></i></div>
+                           5. Projetos e Projeções Futuras
+                       </h4>
+ 
+                       <div class="mb-8 flex-grow">
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-4 inline-block border-b-2 border-purple-200 pb-1">Projetos para o Desenvolvimento:</h5>
+                           <div class="bg-purple-50/50 rounded-xl p-5 border border-purple-100">
+                               <div class="space-y-4 text-sm text-slate-600">
+                                   <div>
+                                       <span class="font-semibold text-purple-900 block mb-2"><i class="fa-regular fa-lightbulb text-purple-500 mr-1"></i> Ideia/Iniciativa:</span>
+                                       <ul class="list-disc ml-5 space-y-2 text-slate-700">
+                                           <li>Revisão de base para identificarmos – e nos anteciparmos em relação às iniciativas do cliente – processos passíveis de encerramento e/ou que possuam eventuais pendências de cumprimento de condenação, a fim de evitar futuros bloqueios (que são matéria sensível para o cliente).</li>
+                                           <li>Realização de impulsionamentos com as secretarias nos processos que estão parados a muito tempo (a base da TOTVS é praticamente toda migrada e antiga).</li>
+                                           <li>Planilha mensal de acompanhamento dos processos ativos, com coluna de status atual.</li>
+                                       </ul>
+                                   </div>
+                                   <div class="flex items-center gap-2 pt-2 border-t border-purple-100/50">
+                                       <span class="font-semibold text-slate-800">Status:</span>
+                                       <span class="bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full text-xs font-bold">Em andamento</span>
+                                   </div>
+                                   <div>
+                                       <span class="font-semibold text-slate-800 block mb-1">Impacto Esperado:</span>
+                                       <p class="text-emerald-600 bg-emerald-50 p-2 rounded">Melhor satisfação do cliente em destacar a nossa proatividade e compromisso em sanear os processos.</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+ 
+                       <div>
+                           <h5 class="text-sm font-poppins font-bold text-slate-700 mb-3 inline-block border-b-2 border-blue-200 pb-1">Projeções Futuras (Próximo Mês):</h5>
+                           <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                               <p class="text-sm text-slate-700 leading-relaxed"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i>Maior quantidade de encerramento de pastas e consequentemente, maior satisfação do cliente. Com o saneamento da base, pretendemos identificar também, oportunidades de recebimento de honorários em favor do escritório.</p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+ 
+   </main>
+ 
+   <footer class="bg-white border-t border-slate-200 py-6 mt-8">
+       <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs">
+           <p>&copy; 2026 - Relatório de Coordenação MFSA</p>
+           <p class="mt-2 md:mt-0 font-bold tracking-widest flex items-center gap-2">
+               <i class="fa-solid fa-lock text-slate-300"></i> CONFIDENCIAL
+           </p>
+       </div>
+   </footer>
+ 
+   <script>
+       function showSection(sectionId) {
+           // Esconde todas as seções com animação
+           document.querySelectorAll('.content-section').forEach(section => {
+               section.classList.remove('active');
+           });
+ 
+           // Mostra a seção desejada
+           const target = document.getElementById(sectionId);
+           if (target) {
+               target.classList.add('active');
+           }
+ 
+           // Atualiza os estilos das abas de navegação
+           document.querySelectorAll('.nav-btn').forEach(btn => {
+               btn.classList.remove('tab-active');
+               btn.classList.add('text-slate-300'); // Reset non-active text color
+           });
+           const activeBtn = document.getElementById('btn-' + sectionId);
+           if (activeBtn) {
+               activeBtn.classList.add('tab-active');
+               activeBtn.classList.remove('text-slate-300');
+           }
+ 
+           // Rola suavemente para o topo do conteúdo (abaixo do header) ao trocar de aba
+           window.scrollTo({ top: 0, behavior: 'smooth' });
+       }
+   </script>
 </body>
 </html>
